@@ -1,62 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define sensore A5 
 
-#include <SPI.h>
-#include <SD.h>
+int luminosita;
+int inizio;
+int fine;
+int tempo;
+String morse;
+char app; 
+String codice[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
+               "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}; //codice morse
+                   
+char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+                   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'}; //alfabeto
+                       
 
-struct nodo {
+typedef struct nodo {
   String car;
-  struct nodo *tipo
-}
+  struct nodo *next;
+}Lista;
 
-#define sensore A5 //pin del sensore di luminosità
-#define led 13 //pin del led
-int luminosità;
-int inizio;//variabile per il calcolo del tempo 
-int fine;//variabile per il calcolo del tempo
-String app; //stringa di appoggio
+Lista* lista = NULL;
+
+
+
 
 void setup() {
   // put your setup code here, to run once:
-  String codice[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
-                     "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}; //codice morse
-                   
-  String alfabeto[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
-                       "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "."}; //alfabeto
-                       
-  pinMode(led, OUTPUT);
+   
+
   pinMode(sensore, INPUT);
   Serial.begin(9600);
-  luminosità = 0;
-  app = "";
+  morse = "";
+  tempo = 0;
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  app = "";
+  while(tempo < 1950) {
+    ricevere();
+  }
+  traduci();
+  morse = "";
 }
 
 void ricevere() {
-  luminosità = analogRead(A5);
-  if(luminosità >= 500) {
-    if(digitalRead(led) == HIGH) {
-      inizio = millis()
-    }
-    else if(digitalRead(led) == LOW) {
-      fine = millis();
-    }
+  
+  luminosita = analogRead(sensore);
+  if(luminosita >= 500) {
+    inizio = millis();  
   }
-  if(fine - inizio <= 550 && fine - inizio >= 450) {
-    app = app + "."
+  while(luminosita >= 500) {}
+  fine = millis();
+  tempo = fine - inizio;
+
+   if(tempo >= 450 && tempo <= 550) {
+    morse = morse + ".";
   }
-  else if(fine - inizio <= 1050 && fine - inizio >= 950) {
-    app = app + "-"
+  else if(tempo >= 950 && tempo <= 1050) {
+    morse = morse + "-";
   }
-  else if(fine - inizio <= 2050 && fine - inizio >= 1950) {
-    for(int i = 0; i < app.length() - 1; i++) {
-      if(app == codice[i])
-      {
-        
-      }
+  else if(tempo >= 1950 && tempo <= 2050) {
+    
+  }
+}
+
+void traduci() {
+  
+  for(int c = 0; c < codice; c++) {
+    if(codice[c] == morse) {
+      app = alfabeto[c];
     }
   } 
+}
+
+Lista* creaNodo(char app)
+{
+  Lista* n = (Lista*)malloc(sizeof(Lista));
+  n-> car = app;
+  n-> next = NULL;
+  return n;
+}
+
+Lista* insNodoTesta(Lista* l, char app)
+{
+  Lista* n = creaNodo(app);
+  n-> next = NULL;
+  return n;
 }
