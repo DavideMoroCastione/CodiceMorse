@@ -57,10 +57,10 @@ void ricevere() {
   tempo = fine - inizio;
   
   if(tempo >= 450 && tempo <= 550) {
-    morse = morse + ".";
+    morse = morse + '.';
   }
   else if(tempo >= 950 && tempo <= 1050) {
-    morse = morse + "-";
+    morse = morse + '-';
   }
 }
 
