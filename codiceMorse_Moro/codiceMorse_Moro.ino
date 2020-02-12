@@ -29,7 +29,7 @@ void setup() {
   pinMode(sensore, INPUT);
   Serial.begin(9600);
   morse = "";
-  tempo = 0;
+  tempo = 1;
   luminosita = 0;
   inizio = 0;
   fine = 0;
@@ -38,13 +38,7 @@ void setup() {
 //------------------------------------------------------------
 void loop() {
   // put your main code here, to run repeatedly:
-  
-  while(tempo < 1950) {
     ricevere();
-  }
-  traduci();
-  morse = "";
-  tempo = 0;
 }
 
 //-----------------------------------------------------------
@@ -66,6 +60,13 @@ void ricevere() {
   else if(tempo >= 950 && tempo <= 1050) {
     morse = morse + '-';
   }
+  else if(tempo >= 1950 && tempo <= 2050) {
+    traduci();
+    if(tempo >= 2300) {
+      stampaLista(lista);
+      Serial.print('.');
+    }
+  }
 }
 
 //-------------------------------------------------------------
@@ -77,7 +78,7 @@ void traduci() {
     }
   }
   lista = insNodoCoda(lista, app);
-  stampaLista(lista);
+  morse = "";
 }
 
 //--------------------------------------------------------------
@@ -106,7 +107,7 @@ Lista* insNodoCoda(Lista* l, char app) {
 void stampaLista(Lista* l) {
 
   if(l != NULL) {
-    Serial.println(l->car);
+    Serial.print(l->car);
     stampaLista(l->next);
   }
 }
