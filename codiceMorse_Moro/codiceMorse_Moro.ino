@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #define sensore A5 
@@ -9,7 +10,7 @@ int tempo;
 String morse;
 char app; 
 String codice[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
-               "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}; //codice morse
+                   "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}; //codice morse
                    
 char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
                    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'}; //alfabeto
@@ -29,6 +30,9 @@ void setup() {
   Serial.begin(9600);
   morse = "";
   tempo = 0;
+  luminosita = 0;
+  inizio = 0;
+  fine = 0;
 }
 
 //------------------------------------------------------------
@@ -46,10 +50,10 @@ void loop() {
 //-----------------------------------------------------------
 void ricevere() {
 
-  luminosita = analogRead(sensore);
-  if(luminosita >= 400) {
-    inizio = millis();  
+  while(luminosita < 400) {
+    luminosita = analogRead(sensore);
   }
+  inizio = millis();  
   while(luminosita >= 400) {
      luminosita = analogRead(sensore);  
   }
@@ -67,9 +71,9 @@ void ricevere() {
 //-------------------------------------------------------------
 void traduci() {
   
-  for(int c = 0; c < codice; c++) {
-    if(codice[c] == morse) {
-      app = alfabeto[c];
+  for(int i = 0; i < 26; i++) {
+    if(codice[i] == morse) {
+      app = alfabeto[i];
     }
   }
   lista = insNodoCoda(lista, app);
