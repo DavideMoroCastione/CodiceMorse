@@ -29,7 +29,7 @@ void setup() {
   pinMode(sensore, INPUT);
   Serial.begin(9600);
   morse = "";
-  tempo = 1;
+  tempo = 0;
   luminosita = 0;
   inizio = 0;
   fine = 0;
@@ -85,8 +85,8 @@ void traduci() {
 Lista* creaNodo(char app) {
   
   Lista* n = (Lista*)malloc(sizeof(Lista));
-  n-> car = app;
-  n-> next = NULL;
+  n->car = app;
+  n->next = NULL;
   return n;
 }
 
@@ -106,8 +106,14 @@ Lista* insNodoCoda(Lista* l, char app) {
 //------------------------------------------------------------------
 void stampaLista(Lista* l) {
 
-  if(l != NULL) {
-    Serial.print(l->car);
-    stampaLista(l->next);
+  Lista* aiuto = l;
+  char a;
+  
+  while(aiuto != NULL) {
+    a = aiuto->car;
+    Serial.println("--->");
+    Serial.print(a);
+    aiuto = aiuto->next;
   }
+  lista = NULL;
 }
