@@ -8,6 +8,7 @@ int inizio;
 int fine;
 int tempo;
 String morse;
+String boom;
 char app; 
 String codice[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
                    "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".-.-.-"}; //codice morse
@@ -38,8 +39,10 @@ void setup() {
 //------------------------------------------------------------
 void loop() {
   // put your main code here, to run repeatedly:
+ 
     ricevere();
-    //Serial.print(analogRead(sensore));
+  
+    
 }
 
 //-----------------------------------------------------------
