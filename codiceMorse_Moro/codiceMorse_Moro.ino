@@ -10,7 +10,7 @@ int tempo;
 String morse;
 char app; 
 String codice[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
-                   "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."}; //codice morse
+                   "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".-.-.-"}; //codice morse
                    
 char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
                    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'}; //alfabeto
@@ -39,21 +39,24 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     ricevere();
+    //Serial.print(analogRead(sensore));
 }
 
 //-----------------------------------------------------------
 void ricevere() {
 
-  while(luminosita < 400) {
+  while(luminosita < 100) {
     luminosita = analogRead(sensore);
+    delay(1);
   }
   inizio = millis();  
-  while(luminosita >= 400) {
+  while(luminosita >= 100) {
      luminosita = analogRead(sensore);  
+     delay(1);
   }
   fine = millis();
   tempo = fine - inizio;
-  
+  //Serial.println(tempo);
   if(tempo >= 450 && tempo <= 550) {
     morse = morse + '.';
   }
@@ -62,23 +65,22 @@ void ricevere() {
   }
   else if(tempo >= 1950 && tempo <= 2050) {
     traduci();
-    if(tempo >= 2300) {
+    if(morse = ".-.-.-") {
       stampaLista(lista);
-      Serial.print('.');
     }
+    morse = "";
   }
 }
 
 //-------------------------------------------------------------
 void traduci() {
   
-  for(int i = 0; i < 26; i++) {
+  for(int i = 0; i < 27; i++) {
     if(codice[i] == morse) {
       app = alfabeto[i];
     }
   }
   lista = insNodoCoda(lista, app);
-  morse = "";
 }
 
 //--------------------------------------------------------------
@@ -111,8 +113,8 @@ void stampaLista(Lista* l) {
   
   while(aiuto != NULL) {
     a = aiuto->car;
-    Serial.println("--->");
-    Serial.print(a);
+    Serial.print("---> ");
+    Serial.println(a);
     aiuto = aiuto->next;
   }
   lista = NULL;
